@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import AddingMobileButton from './components/AddingMobileButton/AddingMobileButton'
-import Modal from 'react-bootstrap/Modal'; 32.7k (gzipped: 10.4k)
+import Modal from 'react-bootstrap/Modal';
 
 function App() {
     const [showModal, setShowModal] = useState(false)
@@ -24,7 +24,7 @@ function App() {
       </Col>
 
       <Col>
-      <div className="d-md-none overlapping-div"> onClick={handleOpenModal}>
+      <div className="d-md-none overlapping-div" onClick={handleOpenModal}>
         <AddingMobileButton />
       </div>
         <Row>
