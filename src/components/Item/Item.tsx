@@ -17,9 +17,9 @@ function Item(props: task | goal) {
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (isActiveInMenu === 'tasks') {
-      removeTask(props as task);
+      removeTask(props._id); //Pasamos solo el _id (string) en lugar del objeto completo
     } else {
-      removeGoal(props as goal);
+      removeGoal(props._id);  //Pasamos solo el _id (string) en lugar del objeto completo
     }
   };
   return (
@@ -33,7 +33,7 @@ function Item(props: task | goal) {
           {props.description}
         </Card.Text>
         <Card.Text className="fw-bold">
-          {props.dueDate}
+          {props.duedate}  {/*Usamos duedate (minúsculas) */}
         </Card.Text>
         <Card.Text>
           15/05/2026

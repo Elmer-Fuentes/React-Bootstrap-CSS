@@ -22,16 +22,11 @@ function App() {
   const isActiveInMenu = useMenuStore((state) => state.menu.active);
 
   useEffect(() => {
-    useTaskStore.getState().setTasks([
-      { id: 1, name: 'Tarea 1', description: 'Descripción de la tarea 1', dueDate: '2024-12-31' },
-      { id: 2, name: 'Tarea 2', description: 'Descripción de la tarea 2', dueDate: '2024-11-30' },
-    ]);
-
-    useGoalStore.getState().setGoals([
-      { id: 1, name: 'Meta 1', description: 'Descripción de la meta 1', dueDate: '2025-01-31' },
-      { id: 2, name: 'Meta 2', description: 'Descripción de la meta 2', dueDate: '2025-02-28' },
-    ]);
-
+    // Se inicializa la carga de datos del Backend al montar el componente App
+    // Esto asegura que la interfaz siempre tenga los datos más recientes de MongoDB
+  useTaskStore.getState().fetchTasks();
+    useGoalStore.getState().fetchGoals();
+    // Estado inicial del menú
     useMenuStore.getState().setActive('tasks');
   }, []);
   return (
@@ -52,11 +47,15 @@ function App() {
           <div className="scrolling">
             {isActiveInMenu === 'tasks' ? (
               tasks.map((task) => (
-                <Item key={task.id} {...task} />
+                // Cambiamos task.id por task._id
+              // Usamos task._id! porque garantizamos que al venir de la BD tendrá ID
+                <Item key={task._id} {...task} />
               ))
             ) : (
               goals.map((goal) => (
-                <Item key={goal.id} {...goal} />
+                // Cambiamos task.id por task._id
+                // Usamos task._id! porque garantizamos que al venir de la BD tendrá ID
+                <Item key={goal._id} {...goal} />
               ))
             )}
           </div>

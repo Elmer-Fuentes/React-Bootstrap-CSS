@@ -31,9 +31,11 @@ function FormTaskAndGoal({ onAdd }: FormTaskAndGoalProps) {
 
     if (name && description && dueDate) {
       if (isActiveInMenu === 'tasks') {
-        addTask({ id: Date.now(), name, description, dueDate });
+        // Envio de datos a la API de tareas
+        addTask({ name, description, duedate: dueDate });
       } else {
-        addGoal({ id: Date.now(), name, description, dueDate });
+        // Envio de datos a la API de metas
+        addGoal({ name, description, duedate: dueDate });
       }
 
       // Limpiar campos después de agregar
