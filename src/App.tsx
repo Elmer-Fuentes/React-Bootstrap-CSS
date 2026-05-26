@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import './App.scss';
-import Item from './components/Item/Item';
-import FormTaskAndGoal from './components/Form/Form';
-import Menu from './components/Menu/Menu';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import AddingMobileButton from './components/AddingMobileButton/AddingMobileButton';
+import './App.scss'
+import Item from './components/Item/Item'
+import FormTaskAndGoal from './components/Form/Form'
+import Menu from './components/Menu/Menu'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import AddingMobileButton from './components/AddingMobileButton/AddingMobileButton'
 import Modal from 'react-bootstrap/Modal';
 import { useTaskStore } from "./store/taskStore";
 import { useGoalStore } from "./store/goalStore";
@@ -22,49 +22,58 @@ function App() {
   const isActiveInMenu = useMenuStore((state) => state.menu.active);
 
   useEffect(() => {
-    useTaskStore.getState().fetchTasks();
+    // Se inicializa la carga de datos del Backend al montar el componente App
+    // Esto asegura que la interfaz siempre tenga los datos más recientes de MongoDB
+  useTaskStore.getState().fetchTasks();
     useGoalStore.getState().fetchGoals();
+    // Estado inicial del menú
     useMenuStore.getState().setActive('tasks');
   }, []);
-
   return (
     <div className="App">
-      <Menu />
-      <Container>
+  <Menu />
+
+  <Container>
+    <Row>
+      <Col className="d-none d-md-block">
+        <FormTaskAndGoal />
+      </Col>
+
+      <Col>
+      <div className="d-md-none overlapping-div" onClick={handleOpenModal}>
+        <AddingMobileButton />
+      </div>
         <Row>
-          <Col className="d-none d-md-block">
-            <FormTaskAndGoal />
-          </Col>
-          <Col>
-            <div className="d-md-none overlapping-div" onClick={handleOpenModal}>
-              <AddingMobileButton />
-            </div>
-            <Row>
-              <div className="scrolling">
-                {isActiveInMenu === 'tasks' ? (
-                  tasks.map((task) => (
-                    <Item key={task._id} {...task} />
-                  ))
-                ) : (
-                  goals.map((goal) => (
-                    <Item key={goal._id} {...goal} />
-                  ))
-                )}
-              </div>
-            </Row>
-          </Col>
+          <div className="scrolling">
+            {isActiveInMenu === 'tasks' ? (
+              tasks.map((task) => (
+                // Cambiamos task.id por task._id
+              // Usamos task._id! porque garantizamos que al venir de la BD tendrá ID
+                <Item key={task._id} {...task} />
+              ))
+            ) : (
+              goals.map((goal) => (
+                // Cambiamos task.id por task._id
+                // Usamos task._id! porque garantizamos que al venir de la BD tendrá ID
+                <Item key={goal._id} {...goal} />
+              ))
+            )}
+          </div>
         </Row>
-      </Container>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar tarea</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <FormTaskAndGoal onAdd={handleCloseModal} />
-        </Modal.Body>
-      </Modal>
-    </div>
-  );
+        </Col>
+      </Row>
+    </Container>
+            <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Agregar tarea</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <FormTaskAndGoal onAdd={handleCloseModal} />
+          </Modal.Body>
+        </Modal>
+  </div>
+)
 }
 
-export default App;
+export default App
